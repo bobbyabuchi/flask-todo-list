@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-with, initial-scale=1.0">
+	    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome.min.css')}}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='_bootswatch.scss')}}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='_variables.scss')}}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css')}}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css')}}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css')}}">
+	    <link rel="shortcut icon" type="image/jpg" href="{{ url_for('static', filename='icon.png')}}"/>
+		<title>Todo App | Home</title>
+	</head>
+	<body>
+		<div class="container">
+			<nav class="navbar navbar-dark bg-dark">
+			  <!-- Navbar content -->
+
+			  <img src="{{ url_for('static', filename='icon.png')}}" style="height: 50px;">
+			  <b class="text-white">HTML</b>
+			  <b class="text-white">CSS</b>
+			  <b class="text-white">Python</b>
+			  <b class="text-white">Flask</b>
+			  <b class="text-white">SQLite</b>
+			</nav>
+			<br />
+		    
+		    <hr />
+		    <div>
+			    <form action="/add" method="post">
+			    	<div class="form-group">
+				    	<label>Add Task </label> <input type="text" name="todo_item" placeholder="Enter Task" style="width: 50%;">
+				    	<input type="submit" name="add" value="Add" class="btn btn-primary btn-sm ml-2">
+				    </div>
+				</form>
+			</div>
+			<div>
+			    <div>
+				    <div>
+				    	<table class="table table-striped">
+				    		<thead>
+				    			<th>Tasks</th>
+				    			<th>Actions</th>
+				    			<th>Target Date</th>
+				    			<th>Timer (countdown with JS)</th>
+				    		</thead>
+				    		{% for item in todo_items_from_db  %}
+				    		<tr>
+				    			<td>
+				    				<span>{{ item.td_text }}</span>
+				    			</td>
+				    			<td>
+				    				<a href="{{ url_for('completed', td_id=item.td_id) }}" class="btn btn-success btn-sm mr-2">Check</a>
+				    				
+				    				<a href="{{ url_for('edit', td_id=item.td_id) }}" class="btn btn-dark btn-sm mr-2">Edit</a>
+				    			
+				    				<a href="{{ url_for('trash', td_id=item.td_id) }}" class="btn btn-danger btn-sm mr-2">Trash</a>
+				    			</td>
+				    			<td>
+				    				target_date
+				    			</td>
+				    			<td>
+				    				count_down
+				    			</td>
+				    		</tr>
+						{% endfor %}
+				    	</table>
+				    </div>
+				</div>
+			</div>
+			<br /><br />
+			<div>
+				<table class="table table-striped">
+				    <thead>
+				    	<th><h5>FINISHED TASKS</h5></th>
+				    	<th>ACTION</th>
+				   	</thead>
+				   		{% for item in done_items_from_db  %}
+				   		<tr>
+				   			<td>
+			    				<span class="text-success"><b>{{ item.td_text }}</b></span>
+			    			</td>
+			    			<td>
+			    				<a href="{{ url_for('undo_completed', td_id=item.td_id) }}" class="btn btn-primary btn-sm">Undo</a>
+			    			</td>
+				   		</tr>
+						{% endfor %}
+		    	</table>
+			</div>
+			<div>
+				<table class="table table-striped">
+				    <thead>
+				    	<th><h5>TRASH</h5></th>
+				    	<th>ACTION (Restore/Delete Permanently)</th>
+				   	</thead>
+				   		{% for item in trash_items_from_db  %}
+				   		<tr>
+				   			<td>
+			    				<del>{{ item.td_text }}</del>
+			    			</td>
+			    			<td>
+			    				<a href="{{ url_for('restore', td_id=item.td_id) }}" class="btn btn-primary btn-sm mr-2">Restore</a>
+			    				<a href="{{ url_for('delete', td_id=item.td_id) }}" class="btn btn-danger btn-sm mr-2">Delete</a>
+			    			</td>
+				   		</tr>
+						{% endfor %}
+		    	</table>
+			</div>
+			<div class="footer text-white card"> 
+				<span class="card-footer">&copy; 2022 Todo App Co.&trade;</span>
+			</div>
+		</div>
+	</body>
+</html>

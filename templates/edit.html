@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-with, initial-scale=1.0">
+	    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome.min.css')}}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='_bootswatch.scss')}}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='_variables.scss')}}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css')}}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css')}}">
+	    <link rel="shortcut icon" type="image/jpg" href="{{ url_for('static', filename='icon.png')}}"/>
+		<title>To-do List | Edit</title>
+	</head>
+	<body>
+		<div class="container">
+			<nav class="navbar navbar-dark bg-dark">
+			  <!-- Navbar content -->
+
+			  <span class="text-white">Simple to do List</span>
+			</nav>
+			<br />
+		    <h2>Todo List</h2>
+		    <hr />
+		    <div>
+			    <form action="/edit/{{ todo_data.td_id }}" method="POST">
+			    	<div class="form-group">
+				    	<label>Edit Task </label> <input type="text" name="td_text" value="{{ todo_data.td_text }}" style="width: 50%;">
+				    	<input type="submit" name="edit" value="Save" class="btn btn-primary btn-sm ml-2"> | 
+				    	<a href="/" class="btn btn-dark btn-sm">Cancel</a>
+				    </div>
+				</form>
+			</div>
+			<div>
+			    <div>
+				    <div>
+				    	<table class="table table-striped">
+				    		<thead>
+				    			<th>Tasks</th>
+				    			<th>Actions</th>
+				    			<th>Target Date</th>
+				    			<th>Timer (countdown with JS)</th>
+				    		</thead>
+				    		{% for item in todo_items_from_db  %}
+				    		<tr>
+				    			<td>
+				    				<span>{{ item.td_text }}</span>
+				    			</td>
+				    			<td>
+				    				<a href="{{ url_for('completed', td_id=item.td_id) }}" class="btn btn-success btn-sm mr-2">Check</a>
+				    				
+				    				<a href="{{ url_for('edit', td_id=item.td_id) }}" class="btn btn-dark btn-sm mr-2">Edit</a>
+				    			
+				    				<a href="{{ url_for('trash', td_id=item.td_id) }}" class="btn btn-danger btn-sm mr-2">Trash</a>
+				    			</td>
+				    			<td>
+				    				target_date
+				    			</td>
+				    			<td>
+				    				count_down
+				    			</td>
+				    		</tr>
+						{% endfor %}
+				    	</table>
+				    </div>
+				</div>
+			</div>
+			<br /><br />
+			<div>
+				<table class="table table-striped">
+				    <thead>
+				    	<th>FINISHED TASKS</th>
+				    	<th>ACTION</th>
+				   	</thead>
+				   		{% for item in done_items_from_db  %}
+				   		<tr>
+				   			<td>
+			    				<span class="text-success"><b>{{ item.td_text }}</b></span>
+			    			</td>
+			    			<td>
+			    				<a href="{{ url_for('undo_completed', td_id=item.td_id) }}" class="btn btn-dark btn-sm">Undo</a>
+			    			</td>
+				   		</tr>
+						{% endfor %}
+		    	</table>
+			</div>
+			<div>
+				<table class="table table-striped">
+				    <thead>
+				    	<th>TRASH</th>
+				    	<th>ACTION</th>
+				   	</thead>
+				   		{% for item in trash_items_from_db  %}
+				   		<tr>
+				   			<td>
+			    				<del>{{ item.td_text }}</del>
+			    			</td>
+			    			<td>
+			    				<a href="{{ url_for('restore', td_id=item.td_id) }}" class="btn btn-dark btn-sm mr-2">Restore</a>
+			    				<a href="{{ url_for('delete', td_id=item.td_id) }}" class="btn btn-danger btn-sm mr-2">Delete Permanently</a>
+			    			</td>
+				   		</tr>
+						{% endfor %}
+		    	</table>
+			</div>
+			<div class="footer bg-primary text-white">
+				&copy; 2020 Simple Todo List | Saviours Resort.Company
+			</div>
+		</div>
+	</body>
+</html>
